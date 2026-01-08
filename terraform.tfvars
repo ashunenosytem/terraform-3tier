@@ -1,0 +1,5 @@
+project_name        = "three-tier-app"
+frontend_vpc_cidr   = "10.10.0.0/16"
+backend_vpc_cidr    = "10.20.0.0/16"
+instance_type       = "t3.micro"
+ssh_allowed_cidr    = "0.0.0.0/0"
