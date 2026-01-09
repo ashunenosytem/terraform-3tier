@@ -17,7 +17,7 @@ crash.*.log
 .terraform.lock.hcl
 
 # Sensitive variable files
-*.tfvars
+# *.tfvars
 *.tfvars.json
 
 # Override files
