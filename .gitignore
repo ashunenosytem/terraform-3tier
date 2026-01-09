@@ -1,0 +1,56 @@
+####################################
+# Terraform
+####################################
+# Local .terraform directories
+**/.terraform/*
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Terraform lock file (keep or ignore based on team choice)
+# Recommended to COMMIT this for reproducible builds
+.terraform.lock.hcl
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI config files
+.terraformrc
+terraform.rc
+
+
+####################################
+# SSH Keys / PEM files (VERY IMPORTANT)
+####################################
+*.pem
+*.key
+*.ppk
+
+
+####################################
+# Logs
+####################################
+*.log
+
+
+####################################
+# OS / Editor junk
+####################################
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
