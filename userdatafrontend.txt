@@ -1,0 +1,68 @@
+user_data = <<-EOF
+#!/bin/bash
+set -euo pipefail
+
+exec > /var/log/user-data.log 2>&1
+echo "===== Frontend user-data started ====="
+
+yum update -y
+yum install -y docker git
+systemctl start docker
+systemctl enable docker
+
+cd /root
+git clone https://github.com/Ashutosh-Ahirwar/ExpenseTracker.git
+cd ExpenseTracker/frontend/expense-tracker
+
+# Make frontend use relative API paths (NOT backend IP)
+sed -i 's|https://expensetrackern.onrender.com||g' src/utils/apiPaths.js
+
+# ---------- NGINX CONFIG ----------
+cat <<EOT > nginx.conf
+server {
+    listen 80;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files \$uri \$uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://${var.backend_private_ip}:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+EOT
+
+# ---------- DOCKERFILE ----------
+cat << 'EOT' > Dockerfile
+FROM node:18 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+EOT
+
+# ---------- BUILD & RUN ----------
+docker build -t expense-frontend .
+
+docker run -d \
+  --restart always \
+  --name expense-frontend \
+  -p 80:80 \
+  expense-frontend
+
+echo "===== Frontend user-data completed ====="
+EOF

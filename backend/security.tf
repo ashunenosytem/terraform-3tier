@@ -73,6 +73,12 @@ resource "aws_security_group" "backend_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+    ingress {
+    from_port       = 5000
+    to_port         = 5000
+    protocol        = "tcp"
+    cidr_blocks = ["10.10.0.0/16"]
+  }
 }
 resource "aws_security_group" "db_sg" {
   name   = "db-sg"
@@ -90,6 +96,12 @@ resource "aws_security_group" "db_sg" {
     to_port         = 22
     protocol        = "tcp"
     security_groups = [aws_security_group.bastion_sg.id]
+  }
+  ingress {
+    from_port       = 5000
+    to_port         = 5000
+    protocol        = "tcp"
+    cidr_blocks = ["10.10.0.0/16"]
   }
 
   egress {
