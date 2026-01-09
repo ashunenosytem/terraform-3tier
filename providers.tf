@@ -9,7 +9,7 @@ terraform {
 }
 provider "aws" {
   alias  = "frontend"
-  region = "us-east-1"
+  region = "us-east-1a"
 }
 
 provider "aws" {
