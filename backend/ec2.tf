@@ -11,7 +11,7 @@ set -e
 exec > /var/log/user-data.log 2>&1
 
 yum update -y
-amazon-linux-extras install docker -y
+yum install docker -y
 systemctl start docker
 systemctl enable docker
 

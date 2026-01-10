@@ -3,7 +3,7 @@ output "vpc_id" {
 }
 
 output "route_table_id" {
-  value = aws_route_table.rt.id
+  value = aws_route_table.rt-frontend.id
 }
 
 output "security_group_id" {

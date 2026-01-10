@@ -8,11 +8,11 @@ resource "aws_vpc" "frontend" {
   }
 }
 
-resource "aws_internet_gateway" "igw" {
+resource "aws_internet_gateway" "igw-frontend" {
   vpc_id = aws_vpc.frontend.id
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public-frontend" {
   vpc_id                  = aws_vpc.frontend.id
   cidr_block              = "10.10.1.0/24"
   availability_zone = "us-east-1a"
@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
     Name = "${var.project_name}-frontend-public-subnet"
   }
 }
-resource "aws_subnet" "public1" {
+resource "aws_subnet" "public1-frontend" {
   vpc_id                  = aws_vpc.frontend.id
   cidr_block              = "10.10.2.0/24"
   availability_zone = "us-east-1b"
@@ -33,30 +33,30 @@ resource "aws_subnet" "public1" {
   }
 }
 
-resource "aws_route_table" "rt" {
+resource "aws_route_table" "rt-frontend" {
   vpc_id = aws_vpc.frontend.id
 }
-resource "aws_route_table" "rt1" {
+resource "aws_route_table" "rt1-frontend" {
   vpc_id = aws_vpc.frontend.id
 }
-resource "aws_route" "internet" {
-  route_table_id         = aws_route_table.rt.id
+resource "aws_route" "internet-frontend" {
+  route_table_id         = aws_route_table.rt-frontend.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
+  gateway_id             = aws_internet_gateway.igw-frontend.id
 }
-resource "aws_route" "internet1" {
-  route_table_id         = aws_route_table.rt1.id
+resource "aws_route" "internet1-frontend" {
+  route_table_id         = aws_route_table.rt1-frontend.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
+  gateway_id             = aws_internet_gateway.igw-frontend.id
 }
 
-resource "aws_route_table_association" "assoc" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.rt.id
+resource "aws_route_table_association" "assoc-frontend" {
+  subnet_id      = aws_subnet.public-frontend.id
+  route_table_id = aws_route_table.rt-frontend.id
 }
-resource "aws_route_table_association" "assoc1" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.rt.id
+resource "aws_route_table_association" "assoc1-frontend" {
+  subnet_id      = aws_subnet.public1-frontend.id
+  route_table_id = aws_route_table.rt1-frontend.id
 }
 # resource "aws_launch_template" "backend_lt" {
 #   name_prefix   = "backend-lt-"
