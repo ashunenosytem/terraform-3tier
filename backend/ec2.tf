@@ -7,7 +7,7 @@ resource "aws_instance" "backend" {
 
   user_data = <<-EOF
 #!/bin/bash
-set -e
+set -ex
 exec > /var/log/user-data.log 2>&1
 
 yum update -y
@@ -24,7 +24,7 @@ cd /home/ec2-user
 git clone https://github.com/Ashutosh-Ahirwar/ExpenseTracker.git
 cd ExpenseTracker/backend
 
-# ---- PATCH server.js (listen on all interfaces) ----
+#PATCH server.js (listen on all interfaces)
 sed -i 's/app.listen(PORT/app.listen(PORT, "0.0.0.0"/' server.js
 
 # ---- ENV FILE (CRITICAL FIX) ----

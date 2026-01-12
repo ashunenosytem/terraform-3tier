@@ -4,24 +4,24 @@ set -ex
 exec > /var/log/user-data.log 2>&1
 echo "===== Frontend user-data started ====="
 
-# ---- Install Docker & Git (NO yum update) ----
+#Install Docker & Git
 yum install -y docker git
 
 systemctl start docker
 systemctl enable docker
 
-# Docker socket permission (Amazon Linux quirk)
-chmod 666 /var/run/docker.sock || true
+usermod -aG docker ec2-user
+systemctl restart docker
 
-# ---- Clone application ----
+# Clone application
 cd /root
 git clone https://github.com/Ashutosh-Ahirwar/ExpenseTracker.git
 cd ExpenseTracker/frontend/expense-tracker
 
-# ---- Use relative API paths ----
+# Use relative API paths
 sed -i 's|https://expensetrackern.onrender.com||g' src/utils/apiPaths.js
 
-# ---- NGINX CONFIG (backend IP from Terraform) ----
+# NGINX CONFIG (backend IP from Terraform)
 cat <<EOF > nginx.conf
 server {
     listen 80;
@@ -43,7 +43,7 @@ server {
 }
 EOF
 
-# ---- Dockerfile ----
+# Dockerfile 
 cat <<'EOF' > Dockerfile
 FROM node:18 AS build
 WORKDIR /app
@@ -59,7 +59,7 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 EOF
 
-# ---- Build & Run ----
+# Build & Run
 docker build -t expense-frontend .
 
 docker run -d \
