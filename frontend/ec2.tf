@@ -5,7 +5,7 @@ resource "aws_instance" "frontend" {
   vpc_security_group_ids      = [aws_security_group.frontend_sg.id]
   associate_public_ip_address = true
 user_data = templatefile("${path.module}/frontend-userdata.sh", {
-  backend_private_ip = var.backend_private_ip
+  backend_private_ip = var.backend-alb-dns
 })
 
   tags = {

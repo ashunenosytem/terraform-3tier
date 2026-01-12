@@ -15,3 +15,9 @@ output "frontend_public_ip" {
 output "frontend_sg_id" {
   value = aws_security_group.frontend_sg.id
 }
+output "public_subnet_id"{
+  value = aws_subnet.public-frontend.id
+}
+output "public_subnet_id1"{
+  value = aws_subnet.public1-frontend.id
+}

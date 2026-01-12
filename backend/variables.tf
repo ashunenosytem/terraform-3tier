@@ -13,6 +13,7 @@ variable "instance_type" {
 variable "ssh_allowed_cidr" {
   type = string
 }
+
 # variable "frontend_sg_id" {
 #   type = string
 # }

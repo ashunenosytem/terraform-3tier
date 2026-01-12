@@ -15,7 +15,9 @@ variable "ssh_allowed_cidr" {
   type = string
 }
 
-
+variable "backend-alb-dns" {
+  type = string
+}
 variable "backend_private_ip" {
   type = string
 }

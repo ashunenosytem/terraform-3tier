@@ -99,10 +99,11 @@ resource "aws_route_table_association" "private_db_assoc" {
   subnet_id      = aws_subnet.private_db.id
   route_table_id = aws_route_table.private_rt.id
 }
-# resource "aws_route_table_association" "private_assoc1" {
-#   subnet_id      = aws_subnet.private1.id
-#   route_table_id = aws_route_table.private_rt1.id
-# }
+resource "aws_route_table_association" "private_assoc1" {
+  subnet_id      = aws_subnet.private1.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
 
 resource "aws_security_group" "bastion_sg" {
   name   = "bastion-sg"
